@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+#define ll  long long
+bool h;
+using namespace std;
+ll expo(ll a,ll  b){
+    if(b==1)    return a;
+    if(b==0)    return 1;
+    if(a>1e9)  { h=false; return 0;}
+    return expo(a*a,b/2)*expo(a,b%2);
+}
+int main() {
+    ll t;
+    cin>>t;
+    vector<pair<ll,pair<ll,ll> > > b;
+    for(int i=1;i<=1000;i++){
+        for(int j=1;j<1001;j++){
+            h=true;
+            ll x=expo(i,j)*j+expo(j,i)*i;
+            if(x>1e9||!h)   break;
+            b.push_back(make_pair(x,make_pair(i,j)));
+        }
+    }
+    sort(b.begin(),b.end());
+    while(t--){
+        ll n;
+        cin>>n;
+        if(n%2==0){
+            cout<<n/2<<' '<<1<<endl;
+            continue;
+        }
+        int l=0,r=b.size()-1; ll m=(l+r)/2;
+        h=false;
+        while(l<r){
+            if(b[m].first>n)  r=m-1;
+            if(b[m].first<n)  l=m+1;
+            if(b[m].first==n){
+                cout<<b[m].second.first<<" "<<b[m].second.second<<endl;
+                h=true;
+                break;
+            }
+            m=(l+r)/2;
+        }
+        if(!h) cout<<-1<<endl;
+    }
+}

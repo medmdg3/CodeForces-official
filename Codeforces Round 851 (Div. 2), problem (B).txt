@@ -1,0 +1,73 @@
+#include <bits/stdc++.h>
+#define ll  long long
+#define ld long double
+#define pb(a)   push_back(a)
+#define mk(a,b) make_pair(a,b)  
+using namespace std;
+const ll M=1e9+7;
+vector<ll> prime;
+ll inv(ll a, ll b){
+ return 1<a ? b - inv(b%a,a)*b/a : 1;
+}
+ll mod_expo(ll a,ll b){
+    return (b?(mod_expo((a*a)%M,b/2)*(b&1? a:1))%M:1);
+}
+ll gcd(ll a,ll b){
+    return (b?gcd(b,a%b):a);
+}
+void find_prime(ll n){
+    bool a[n+1];
+    memset(a,true,sizeof(a));
+    for(int i=2;i<=n;i++){
+        for(int j=i;i*j<=n;j++){
+            a[i*j]=false;;
+        }
+    }
+    for(int i=0;i<=n;i++){
+        
+    }
+}
+void N(){
+    cout<<"No"<<endl;
+}
+void Y(){
+    cout<<"Yes"<<endl;
+}
+void solve(){
+    ll n;
+    cin>>n;
+    ll x=0,y=0;
+    ll k=1;
+    ll s1=0,s2=0;
+    while(n!=0){
+        ld a,b;
+        a=n%10;
+        a-=n%2;
+        a/=2;
+        b=n%2+a;
+        a*=k;
+        b*=k;
+        if(s1>s2){
+            x+=a;
+            y+=b;
+            s2+=n%2;
+        }else{
+            x+=b;
+            y+=a;
+            s1+=n%2;
+        }
+        n/=10;
+        k*=10;
+    }
+    cout<<x<<" "<<y<<endl;
+    
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll t=1;
+    cin>>t;
+    while(t--){
+        solve();
+    }
+}

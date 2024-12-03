@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+        ll l=0,r;
+        string g;
+        cin>>g;
+        r=g.size()-1;
+        while(l<r&&g[l]=='0'){
+            l++;
+        }
+        while(l<r&&g[r]=='1'){
+            r--;
+        }
+        if(l==r){
+            cout<<"YES"<<endl;
+            continue;
+        }
+        bool p=true,b=true;
+        for(int i=l+1;i<=r;i++){
+            if(g[i]=='1'){
+                if(g[i-1]=='1'){
+                    p=false;
+                }
+                b=true;
+                for(int j=i+1;j<=r;j++){
+                    if(g[j]=='0'&&g[j-1]=='0')
+                        b=false;
+                }
+                if(b)
+                    break;
+                if(!p)
+                    break;
+            }
+        }
+        if(p||b)
+            cout<<"YES"<<endl;
+        else
+            cout<<"NO"<<endl;
+    }
+}

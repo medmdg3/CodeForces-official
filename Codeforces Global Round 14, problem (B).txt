@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        if(n%2){
+            cout<<"NO"<<endl;
+            continue;    
+        }
+        n/=2;
+        if((int)(sqrt(n))*(int)(sqrt(n))==n){
+            cout<<"YES"<<endl;
+        }else{
+            if(n%2){
+                cout<<"NO"<<endl;
+                continue;
+            }
+            n/=2;
+            if((int)(sqrt(n))*(int)(sqrt(n))==n)
+                cout<<"YES"<<endl;
+            else
+                cout<<"NO"<<endl;
+        }
+    }
+}

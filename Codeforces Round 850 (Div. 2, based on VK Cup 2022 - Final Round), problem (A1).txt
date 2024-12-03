@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+#define ll  long long
+#define pb(a) push_back(a)
+#define sz(a) a.size()
+using namespace std;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        ll a=0,b=0;
+        ll i=1;
+        while(n){
+            ll x=min(i,n);
+            a+=x;
+            n-=x;
+            i+=4;
+            x=min(i,n);
+            b+=x;
+            n-=x;
+            i+=4;
+        }
+        cout<<a<<" "<<b<<endl;
+    }
+}

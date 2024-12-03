@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        ll a[n];
+        for(int i=0;i<n;i++)
+            cin>>a[i];
+        vector<ll> b,c,d,e;
+        b.push_back(a[0]);
+        c.push_back(a[1]);
+        d.push_back(a[0]);
+        e.push_back(a[1]);
+        for(int i=2;i<n;i++){
+            if(i%2==1){
+                c.push_back(min(a[i],c[c.size()-1]));
+                e.push_back(a[i]+e[e.size()-1]);    
+            }
+            else{
+                b.push_back(min(a[i],b[b.size()-1]));
+                d.push_back(a[i]+d[d.size()-1]);  
+            }
+            
+        }
+        ll ans=n*a[0]+n*a[1];
+        for(int i=1;i<n;i++){
+            ll k=i/2,p;
+            if(i%2){
+                p=(n-k-1)*(c[k])+e[k]+(n-k-1)*(b[k])+d[k];
+            }else{
+                p=(n-k)*c[k-1]+e[k-1]+(n-k-1)*b[k]+d[k];
+            }
+            ans=min(ans,p);
+        }
+        cout<<ans<<endl;
+    }
+}

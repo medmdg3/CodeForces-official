@@ -1,0 +1,100 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define pb(a) push_back(a)
+#define mk(a,b) make_pair(a,b)
+#define F first
+#define S second
+#define V vector
+#define sz() size()
+typedef long long ll;
+typedef long double ld;
+
+const ll Mod=1e9+7;
+ll inv(ll a, ll b=Mod){
+ return 1<a ? b - inv(b%a,a)*b/a : 1;
+}
+ll mod_expo(ll a,ll b,ll M=Mod){
+    return (b?(mod_expo((a*a)%M,b/2,M)*(b&1? a:1))%M:1);
+}
+ll GCD(ll a,ll b){
+    return (b?GCD(b,a%b):a);
+}
+ll LCM(ll a,ll b){
+    if((a|b)==0) return 0;
+    return a/GCD(a,b)*b;
+}
+
+template <typename T1> void Print(T1 a){
+    
+    for(auto i:a)   cout<<i<<" ";
+
+    cout<<endl;
+}
+
+template<typename T1> void Read(vector<T1> &a,ll n=-1,bool Clear=false){
+    if(n==-1)n=a.size();
+    if(Clear) a.clear();
+    if(Clear) a.resize(n);
+    for(int i=0;i<n;i++){
+        T1 x;
+        cin>>x;
+        a[i]=(x);
+    }
+}
+void N(){
+    cout<<"No"<<endl;
+}
+void Y(){
+    cout<<"Yes"<<endl;
+}
+void Answer(bool h){
+    if(h)   Y();
+    else N();
+}
+ll DSU_FP(ll ind,vector<ll> &par){
+    if(par[ind]==ind)return ind;
+    return par[ind]=DSU_FP(par[ind],par);
+}
+void DSU_Join(ll x,ll y,vector<ll> &par,vector<ll> &w){
+    ll u=DSU_FP(x,par),v=DSU_FP(y,par);
+    if(u==v)return;
+    if(w[u]<w[v])swap(u,v);
+    w[u]+=w[v];
+    par[v]=u;
+}
+
+
+void solve(){
+    ll n,m;
+    cin>>n>>m;
+    vector<vector<ll>> A(n,vector<ll>(10,-1));
+    vector<ll> par(n),w(n,1);
+    for(int i=0;i<n;i++)par[i]=i;
+    for(int i=0;i<m;i++){
+        ll a,d,k;
+        cin>>a>>d>>k;
+        a--,d--;
+        A[a][d]=max(A[a][d],k-1);
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<10;j++){
+            if(A[i][j]==-1)continue;
+            ll d=j+1;
+            DSU_Join(i,i+d,par,w);
+            A[i+d][j]=max(A[i+d][j],A[i][j]-1);
+        }
+    }
+    ll ans=0;
+    for(int i=0;i<n;i++)if(DSU_FP(i,par)==i)ans++;
+    cout<<ans<<endl;
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll t=1;
+    cin>>t;
+    for(int i=0;i<t;i++){
+        solve();
+    }
+}

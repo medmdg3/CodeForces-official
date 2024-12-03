@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+string a[3];
+ll n;
+void solve(int x,int y,char s){
+    string ans;
+    ll l=0,r=0;
+    while(l<2*n||r<2*n){
+        if(r==2*n){
+            ans+=a[x][l];
+            l++;
+           // cout<<0<<endl;
+            continue;
+        }
+        if(l==2*n){
+            ans+=a[y][r];
+            r++;
+           // cout<<1<<endl;
+            continue;
+        }
+        if(a[x][l]==a[y][r]){
+            ans+=a[y][r];
+            l++;
+            r++;
+          ///  cout<<2<<endl;
+            continue;
+        }
+        if(a[x][l]!=s){
+            ans+=a[x][l];
+            l++;
+           // cout<<3<<endl;
+        }
+        else{
+            ans+=a[y][r];
+           // cout<<4<<endl;
+            r++;
+        }
+    }
+    cout<<ans<<endl;
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int t;
+    cin>>t;
+    while(t--){
+    cin>>n>>a[0]>>a[1]>>a[2];
+    ll ai[3];
+    for(int j=0;j<3;j++){
+        ai[j]=0;
+    for(int i=0;i<2*n;i++){
+        if(a[j][i]=='1'){
+            ai[j]++;
+        }
+    }
+    }
+    for(int i=0;i<3;i++)
+        if(ai[i]>n)
+            ai[i]=1;
+        else
+            ai[i]=0;
+    if(ai[0]==ai[1])
+        solve(0,1,char(ai[0]+(int)('0')));
+    else if(ai[1]==ai[2])
+        solve (1,2,char(ai[1]+(int)('0')));
+    else
+        solve (0,2,char(ai[0]+(int)('0')));
+    }
+}

@@ -1,0 +1,194 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define pb(a) push_back(a)
+#define mk(a,b) make_pair(a,b)
+#define F first
+#define S second
+#define V vector
+#define sz() size()
+typedef long long ll;
+typedef long double ld;
+
+V<ll> prime,fact,Inv;
+const ll Mod=1e9+7;
+ll inv(ll a, ll b=Mod){
+ return 1<a ? b - inv(b%a,a)*b/a : 1;
+}
+ll mod_expo(ll a,ll b,ll M=Mod){
+    return (b?(mod_expo((a*a)%M,b/2)*(b&1? a:1))%M:1);
+}
+ll GCD(ll a,ll b){
+    return (b?GCD(b,a%b):a);
+}
+ll LCM(ll a,ll b){
+	if((a|b)==0) return 0;
+	return a/GCD(a,b)*b;
+}
+vector<pair<ll,ll> > decompose_prime(ll a){
+    vector<pair<ll,ll> > c;
+    ll i=0;
+    while(a>1){
+        if(i<prime.size()){
+            ll ss=0;
+            while(a%prime[i]==0){
+                ss++;
+                a/=prime[i];
+            }
+            if(ss)c.pb(mk(prime[i],ss));
+        }else{
+            c.pb(mk(a,1));
+            break;
+        }
+    }
+    return c;
+}
+void Fact(ll n,ll M=Mod){
+	fact.clear();
+	Inv.clear();
+	fact.pb(1);
+	Inv.resize(n+1);
+
+	for(int i=1;i<=n;i++){
+		fact.pb(fact[i-1]*i%M);
+	}
+
+	Inv[n]=inv(fact[n],M);
+	for(int i=n-1;i>=0;i--){
+		Inv[i]=(Inv[i+1]*(i+1))%M;
+	}
+
+}
+template<typename T1,typename T2,typename T3>
+vector<T1> suite(T2 a,T3 f,ll n){
+	vector<T1> c=a;
+	for(int i=1;i<=n;i++){
+		c.pb(f(c));
+	}
+	return c;
+}
+vector<ll> base(ll a, ll b){
+    vector<ll> c;
+    while(a){
+        c.pb(a%b);
+        a/=b;
+    }
+    return c;
+}
+void Prime(ll n){
+	prime.clear();
+	bool P[n+1];
+	for(int i=0;i<=n;i++)P[i]=true;
+	for(int i=2;i*i<=n;i++){
+		if(P[i])
+			for(int j=i+1;i*j<=n;j++)
+				P[i*j]=false;
+	}
+
+	for(int i=2;i<=n;i++)
+		if(P[i])prime.pb(i);
+
+}
+template<typename T1,typename T2,typename T3>
+vector<T1> Ar_up(T2 a, T3 f){
+	vector<T1> c;
+	for(auto i:a){
+		c.pb(f(i));
+	}
+	return c;
+}
+template<typename T1,typename T2,typename T3>
+T1 Ar_op(T2 a, T3 f,T1 h){
+	T1 c=h;
+	for(auto i:a){
+		c=f(c,i);
+	}
+	return c;
+}
+template<typename T1>
+function<T1(T1,T1)> Operations(ll ind){
+	if(ind == 1)	return [](T1 a,T1 b){return a<b? b : a;} ;//max
+	if(ind == 2)	return [](T1 a,T1 b){return a<b? a : b;} ;//min
+	if(ind == 3)	return [](T1 a,T1 b){return a+b;}; //sum
+	if(ind == 4)	return [](T1 a,T1 b){return a*b;}; //product
+	if(ind == 5)	return [](T1 a,T1 b){return a^b;}; //Xor
+	if(ind == 6)	return [](T1 a,T1 b){return a|b;}; //Or
+	if(ind == 7)	return [](T1 a,T1 b){return a&b;}; //And
+
+}
+template<typename T1,typename T2>
+ll count(T1 a, T2 b){
+    ll ans=0;
+    for(auto i:a){
+        ans+=int(i==b);
+    }
+    return ans;
+}
+template <typename T1> void Print(T1 a){
+    
+    for(auto i:a)	cout<<i<<" ";
+
+    cout<<endl;
+}
+template <typename T1> void Print_Pairs(T1 a){
+    
+    for(auto i:a)	cout<<i.F<<" "<<i.S<<endl;;
+
+    cout<<endl;
+}
+template<typename T1> void Read(vector<T1> &a,ll n,bool Clear=false){
+    if(Clear) a.clear();
+    for(int i=0;i<n;i++){
+        T1 x;
+        cin>>x;
+        a.pb(x);
+    }
+}
+template<typename T1> void ReadPair(vector<T1> &a,ll n,bool Clear=false){
+    if(Clear) a.clear();
+    for(int i=0;i<n;i++){
+        T1 x;
+        cin>>x.S>>x.S;
+        a.pb(x);
+    }
+    return ;
+}
+void N(){
+    cout<<"No"<<endl;
+}
+void Y(){
+    cout<<"Yes"<<endl;
+}
+void Answer(bool h){
+	if(h)	Y();
+	else N();
+}
+void solve(){
+	ll n,m;
+	cin>>n>>m;
+	if(n<m){
+	    n+=m;
+	    m=n-m;
+	    n=n-m;
+	}
+	vector<ll> a;
+	for(int i=0;i<n*m;i++){
+		ll x;
+		cin>>x;
+		a.pb(x);
+	}
+	sort(a.begin(),a.end());
+	ll ans=a.back()-a[0];
+	ans*=(n-1)*(m-1);
+	ll t=(n-1)*(a.back()-a[0])+(m-1)*(a.back()-a[1]);
+	t=max(t,(n-1)*(a.back()-a[0])+(m-1)*(a[a.size()-2]-a[0]));
+	cout<<ans+t<<endl;
+}
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll t=1;
+    cin>>t;
+    for(int i=0;i<t;i++){
+        solve();
+    }
+}

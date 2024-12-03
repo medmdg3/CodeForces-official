@@ -1,0 +1,16 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+        ll n,a,b,x,y;
+        cin>>n>>a>>b>>x>>y;
+        if(2*x>(a+b)||2*y>(2*n-a-b)){
+            cout<<"NO"<<endl;
+        }else
+            cout<<"YES"<<endl;
+    }
+}

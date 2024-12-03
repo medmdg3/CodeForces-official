@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+const int N=1e5+1;
+vector<ll> net,val,vis;
+vector<vector<int> > pre;
+ll c=0,ans=1;
+vector<int> e;
+int dfs(ll ind){
+    c++;
+    ll q=1;
+    for(int i=0;i<pre[ind].size();i++){
+        q+=dfs(pre[ind][i]);
+    }
+    val[ind]=q;
+    return q;
+}
+int main() {
+   ll t;
+   cin>>t;
+   while(t--){
+       ll n;
+       cin>>n;
+       net.clear();
+       val.clear();
+       vis.clear();
+       ans=0;
+       c=-1;
+       pre.clear();
+       for(int i=0;i<n+1;i++){
+           net.push_back(-1);
+           val.push_back(0);
+           vis.push_back(-1);
+           pre.push_back(e);
+       }
+       for(int i=0;i<n;i++){
+           ll x;
+           cin>>x;
+           x=min(n,(i+x));
+           if(x<0)  x=n;
+           net[i]=x;
+           pre[x].push_back(i);
+       }
+       pre[0].clear();
+       ll o=dfs(n);
+       if(val[0]==0){
+           ll p=0;
+           while(vis[p]==-1){
+               vis[p]=1;
+               ans+=n+1+c;
+               p=net[p];
+           }
+       }else{
+           o=0;
+           ll p=0;
+           while(p!=n){
+               ans+=n+1+c-val[p];
+               o++;
+               p=net[p];
+           }
+           ans+=(n-o)*(2*n+1);
+          // cout<<c<<" "<<k<<endl;
+       }
+       cout<<ans<<endl;
+   }
+}

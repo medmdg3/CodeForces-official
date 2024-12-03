@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+    ll n,a,b;
+    cin>>n>>a>>b;
+    if(a==1){
+        if((n-1)%b!=0)
+            cout<<"No"<<endl;
+        else
+            cout<<"Yes"<<endl;
+        continue;
+    }
+    ll k=1;
+    bool poss=false;
+    for(int i=1;k<=n;i++){
+        if((n-k)%b==0){
+            cout<<"Yes"<<endl;
+            poss=true;
+            break;
+        } 
+        k*=a;
+    }
+    if(!poss)    cout<<"No"<<endl;
+    }
+}

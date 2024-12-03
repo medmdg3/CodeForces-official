@@ -1,0 +1,23 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+        ll n,k;
+        cin>>n>>k;
+        ll pre=0;
+        for(int i=0;i<n;i++){
+            ll f=i xor pre;
+            pre=f xor pre;
+            cout<<f<<endl;
+            fflush(stdout);
+            ll h;
+            cin>>h;
+            if(h==1)
+                break;
+        }
+    }
+}

@@ -1,0 +1,293 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define pb(a) push_back(a)
+#define mk(a,b) make_pair(a,b)
+#define F first
+#define S second
+#define V vector
+#define sz() size()
+typedef long long ll;
+typedef long double ld;
+ 
+V<ll> prime,fact,Inv;
+const ll Mod=1e9+7;
+ll inv(ll a, ll b=Mod){
+ return 1<a ? b - inv(b%a,a)*b/a : 1;
+}
+ll mod_expo(ll a,ll b,ll M=Mod){
+    return (b?(mod_expo((a*a)%M,b/2,M)*(b&1? a:1))%M:1);
+}
+ll GCD(ll a,ll b){
+    return (b?GCD(b,a%b):a);
+}
+ll LCM(ll a,ll b){
+	if((a|b)==0) return 0;
+	return a/GCD(a,b)*b;
+}
+vector<pair<ll,ll> > decompose_prime(ll a){
+    vector<pair<ll,ll> > c;
+    ll i=0;
+    while(a>1){
+        if(i<prime.size()){
+            ll ss=0;
+            while(a%prime[i]==0){
+                ss++;
+                a/=prime[i];
+            }
+            if(ss)c.pb(mk(prime[i],ss));
+        }else{
+            c.pb(mk(a,1));
+            break;
+        }
+    }
+    return c;
+}
+void Fact(ll n,ll M=Mod){
+	fact.clear();
+	Inv.clear();
+	fact.pb(1);
+	Inv.resize(n+1);
+ 
+	for(int i=1;i<=n;i++){
+		fact.pb(fact[i-1]*i%M);
+	}
+ 
+	Inv[n]=inv(fact[n],M);
+	for(int i=n-1;i>=0;i--){
+		Inv[i]=(Inv[i+1]*(i+1))%M;
+	}
+ 
+}
+template<typename T1,typename T2,typename T3>
+vector<T1> suite(T2 a,T3 f,ll n){
+	vector<T1> c=a;
+	for(int i=1;i<=n;i++){
+		c.pb(f(c));
+	}
+	return c;
+}
+vector<ll> base(ll a, ll b){
+    vector<ll> c;
+    while(a){
+        c.pb(a%b);
+        a/=b;
+    }
+    return c;
+}
+void Prime(ll n){
+	prime.clear();
+	bool P[n+1];
+	for(int i=0;i<=n;i++)P[i]=true;
+	for(int i=2;i*i<=n;i++){
+		if(P[i])
+			for(int j=i+1;i*j<=n;j++)
+				P[i*j]=false;
+	}
+ 
+	for(int i=2;i<=n;i++)
+		if(P[i])prime.pb(i);
+ 
+}
+template<typename T1,typename T2,typename T3>
+vector<T1> Ar_up(T2 a, T3 f){
+	vector<T1> c;
+	for(auto i:a){
+		c.pb(f(i));
+	}
+	return c;
+}
+template<typename T1,typename T2,typename T3>
+T1 Ar_op(T2 a, T3 f,T1 h){
+	T1 c=h;
+	for(auto i:a){
+		c=f(c,i);
+	}
+	return c;
+}
+template<typename T1>
+function<T1(T1,T1)> Operations(ll ind){
+	if(ind == 1)	return [](T1 a,T1 b){return a<b? b : a;} ;//max
+	if(ind == 2)	return [](T1 a,T1 b){return a<b? a : b;} ;//min
+	if(ind == 3)	return [](T1 a,T1 b){return a+b;}; //sum
+	if(ind == 4)	return [](T1 a,T1 b){return a*b;}; //product
+	if(ind == 5)	return [](T1 a,T1 b){return a^b;}; //Xor
+	if(ind == 6)	return [](T1 a,T1 b){return a|b;}; //Or
+	if(ind == 7)	return [](T1 a,T1 b){return a&b;}; //And
+ 
+}
+template<typename T1,typename T2>
+ll count(T1 a, T2 b){
+    ll ans=0;
+    for(auto i:a){
+        ans+=int(i==b);
+    }
+    return ans;
+}
+template <typename T1> void Print(T1 a){
+ 
+    for(auto i:a)	cout<<i<<" ";
+ 
+    cout<<endl;
+}
+template <typename T1> void Print_Pairs(T1 a){
+ 
+    for(auto i:a)	cout<<i.F<<" "<<i.S<<endl;;
+ 
+    cout<<endl;
+}
+template<typename T1> void Read(vector<T1> &a,ll n=-1,bool Clear=false){
+	if(n==-1)n=a.size();
+    if(Clear) a.clear();
+    if(Clear) a.resize(n);
+    for(int i=0;i<n;i++){
+        T1 x;
+        cin>>x;
+        a[i]=(x);
+    }
+}
+template<typename T1> void ReadPair(vector<T1> &a,ll n,bool Clear=false){
+    if(n==-1)n=a.size();
+    if(Clear) a.clear();
+    if(Clear) a.resize(n);
+    for(int i=0;i<n;i++){
+        T1 x;
+        cin>>x.F>>x.S;
+        a[i]=x;
+    }
+}
+void N(){
+    cout<<"No"<<endl;
+}
+void Y(){
+    cout<<"Yes"<<endl;
+}
+void Answer(bool h){
+	if(h)	Y();
+	else N();
+}
+template<typename T1> ll BS(vector<T1> &a,T1 val,ll l=0,ll r=-1){
+	if(r==-1)r+=a.size();
+	ll m=(l+r)/2;
+	while(l<=r){
+		if(a[m]==val)break;
+		if(a[m]>val)r=m-1;
+		else l=m+1;
+		m=(l+r)/2;
+	}
+	return m;
+}
+ll DSU_FP(ll ind,vector<ll> &par){
+	if(par[ind]==ind)return ind;
+	return par[ind]=DSU_FP(par[ind],par);
+}
+void DSU_Join(ll x,ll y,vector<ll> &par,vector<ll> &w){
+	ll u=DSU_FP(x,par),v=DSU_FP(y,par);
+	if(u==v)return;
+	if(w[u]<w[v])swap(u,v);
+	w[u]+=w[v];
+	par[v]=u;
+}
+
+
+void dfs(ll ind,ll dep,vector<vector<pair<ll,ll>>> &Tree,vector<ll> &depth){
+    depth[ind]=dep;
+    for(auto i:Tree[ind]){
+        dfs(i.F,dep+i.S,Tree,depth);
+    }
+}
+ll find_par(ll x,vector<ll> &par){
+    if(x==par[x])return x;
+    return par[x]=find_par(par[x],par);
+}
+pair<ll,ll> merge(ll u,ll v,vector<set<ll>>&Ele,vector<ll> &par,vector<ll> &ans,ll wt){
+    if(Ele[u].size()<Ele[v].size()){
+        return merge(v,u,Ele,par,ans,wt);
+    }
+    ll n=par.size();
+    ll Ans=0,co=0;
+    par[v]=u;
+    for(auto &i:Ele[v]){
+        set<ll>::iterator t=Ele[u].find((i-1+n)%n);
+        if(t!=Ele[u].end()){
+            ll pa=*t;
+            Ans-=wt;
+            co++;
+        }
+        t=Ele[u].find((i+1)%n);
+        if(t!=Ele[u].end()){
+            ll pa=i;
+            Ans-=wt;
+            co++;
+        }
+    }
+    for(auto &i:Ele[v]){
+        Ele[u].insert(i);
+    }
+    return mk(Ans,co);
+}
+void solve(){
+	ll n,wt;
+	cin>>n>>wt;
+	vector<ll> p,w(n);
+	vector<ll> q;
+	Read(p,n-1,1);
+	for(auto &i:p)i--;
+	for(ll i=0;i<n-1;i++){
+	    ll x,y;
+	    cin>>x>>y;
+	    x-=2;
+	    w[x]=y;
+	    q.pb(x);
+	}
+	vector<vector<pair<ll,ll>>> Tree(n);
+	for(int i=0;i<n-1;i++){
+	    Tree[p[i]].pb(mk(i+1,w[i]));
+	}
+	vector<ll> depth(n,0);
+	dfs(0,0,Tree,depth);
+	vector<ll> Xans(n);
+	for(int i=0;i<n;i++){
+	    if(Tree[i].size()!=0){
+	        Xans[i]=depth[(i+1)%n]-depth[i];
+	    }else{
+	        ll h=0;
+	        if(i!=n-1)h=p[(i+1)%n-1];
+	        Xans[i]=depth[i]+depth[(i+1)%n]-2*depth[h];
+	    }
+	}
+	vector<ll> par(n);
+	vector<set<ll>> Ele(n);
+	for(int i=0;i<n;i++){
+	    par[i]=i;
+	    Ele[i].insert(i);
+	}
+	ll ans=n*wt;
+	ll unknown=n;
+	vector<ll> Ans;
+	ll sw=0;
+	for(int i=0;i<n-1;i++){
+	    ll u=p[q[i]],v=q[i]+1;
+	    u=find_par(u,par),v=find_par(v,par);
+	    ans-=(unknown-2)*(w[q[i]]);
+	    if(u==v){
+	        continue;
+	    }
+	    sw+=w[q[i]];
+	    pair<ll,ll> t=merge(u,v,Ele,par,Xans,wt-sw);
+	    ans+=t.F;
+	    unknown-=t.S;
+	    Ans.pb(ans);
+	}
+	if(Ans.size()>1)
+	Ans[Ans.size()-2]=Ans.back();
+	Print(Ans);
+}
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll t=1;
+    cin>>t;
+    for(int i=0;i<t;i++){
+        solve();
+    }
+}

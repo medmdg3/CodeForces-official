@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        ll a[n],c[n];
+        for(int i=0;i<n;i++){
+            cin>>a[i];
+        }
+        c[0]=a[0];
+        for(int i=1;i<n;i++){
+            c[i]=(c[i-1])xor (a[i]);
+        }
+        bool poss=false;
+        for(int i=0;i<n-1;i++)
+            if(c[i]==(c[n-1]xor c[i]))
+                poss=true;
+        if(poss==true){
+            cout<<"YES"<<endl;
+        }else{
+            for(int i=1;i<n-1;i++){
+                for(int j=i;j<n-1;j++){
+                    if(((c[j]xor (c[i-1]))==c[i-1])&&(c[i-1]==(c[n-1]xor c[j])))
+                        poss=true;
+                }
+            }
+            if(poss)
+                cout<<"YES"<<endl;
+            else
+                cout<<"NO"<<endl;
+        }
+    }
+}

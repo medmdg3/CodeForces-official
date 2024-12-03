@@ -1,0 +1,31 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        string g;
+        int b[26]={0};
+        for(int i=0;i<n;i++){
+            cin>>g;
+            for(int j=0;j<g.size();j++){
+                b[g[j]-'a']++;
+            }
+        }
+        bool poss=true;
+        for(int i=0;i<26;i++){
+            if(b[i]%n!=0){
+                poss=false;
+            }
+        }
+        if(poss){
+            cout<<"YES"<<endl;
+        }else{
+            cout<<"NO"<<endl;
+        }
+    }
+}

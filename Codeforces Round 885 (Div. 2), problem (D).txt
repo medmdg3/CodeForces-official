@@ -1,0 +1,216 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define pb(a) push_back(a)
+#define mk(a,b) make_pair(a,b)
+#define F first
+#define S second
+#define V vector
+#define sz() size()
+typedef long long ll;
+typedef long double ld;
+
+V<ll> prime,fact,Inv;
+const ll Mod=1e9+7;
+ll inv(ll a, ll b=Mod){
+ return 1<a ? b - inv(b%a,a)*b/a : 1;
+}
+ll mod_expo(ll a,ll b,ll M=Mod){
+    return (b?(mod_expo((a*a)%M,b/2)*(b&1? a:1))%M:1);
+}
+ll GCD(ll a,ll b){
+    return (b?GCD(b,a%b):a);
+}
+ll LCM(ll a,ll b){
+	if((a|b)==0) return 0;
+	return a/GCD(a,b)*b;
+}
+vector<pair<ll,ll> > decompose_prime(ll a){
+    vector<pair<ll,ll> > c;
+    ll i=0;
+    while(a>1){
+        if(i<prime.size()){
+            ll ss=0;
+            while(a%prime[i]==0){
+                ss++;
+                a/=prime[i];
+            }
+            if(ss)c.pb(mk(prime[i],ss));
+        }else{
+            c.pb(mk(a,1));
+            break;
+        }
+    }
+    return c;
+}
+void Fact(ll n,ll M=Mod){
+	fact.clear();
+	Inv.clear();
+	fact.pb(1);
+	Inv.resize(n+1);
+
+	for(int i=1;i<=n;i++){
+		fact.pb(fact[i-1]*i%M);
+	}
+
+	Inv[n]=inv(fact[n],M);
+	for(int i=n-1;i>=0;i--){
+		Inv[i]=(Inv[i+1]*(i+1))%M;
+	}
+
+}
+template<typename T1,typename T2,typename T3>
+vector<T1> suite(T2 a,T3 f,ll n){
+	vector<T1> c=a;
+	for(int i=1;i<=n;i++){
+		c.pb(f(c));
+	}
+	return c;
+}
+vector<ll> base(ll a, ll b){
+    vector<ll> c;
+    while(a){
+        c.pb(a%b);
+        a/=b;
+    }
+    return c;
+}
+void Prime(ll n){
+	prime.clear();
+	bool P[n+1];
+	for(int i=0;i<=n;i++)P[i]=true;
+	for(int i=2;i*i<=n;i++){
+		if(P[i])
+			for(int j=i+1;i*j<=n;j++)
+				P[i*j]=false;
+	}
+
+	for(int i=2;i<=n;i++)
+		if(P[i])prime.pb(i);
+
+}
+template<typename T1,typename T2,typename T3>
+vector<T1> Ar_up(T2 a, T3 f){
+	vector<T1> c;
+	for(auto i:a){
+		c.pb(f(i));
+	}
+	return c;
+}
+template<typename T1,typename T2,typename T3>
+T1 Ar_op(T2 a, T3 f,T1 h){
+	T1 c=h;
+	for(auto i:a){
+		c=f(c,i);
+	}
+	return c;
+}
+template<typename T1>
+function<T1(T1,T1)> Operations(ll ind){
+	if(ind == 1)	return [](T1 a,T1 b){return a<b? b : a;} ;//max
+	if(ind == 2)	return [](T1 a,T1 b){return a<b? a : b;} ;//min
+	if(ind == 3)	return [](T1 a,T1 b){return a+b;}; //sum
+	if(ind == 4)	return [](T1 a,T1 b){return a*b;}; //product
+	if(ind == 5)	return [](T1 a,T1 b){return a^b;}; //Xor
+	if(ind == 6)	return [](T1 a,T1 b){return a|b;}; //Or
+	if(ind == 7)	return [](T1 a,T1 b){return a&b;}; //And
+
+}
+template<typename T1,typename T2>
+ll count(T1 a, T2 b){
+    ll ans=0;
+    for(auto i:a){
+        ans+=int(i==b);
+    }
+    return ans;
+}
+template <typename T1> void Print(T1 a){
+    
+    for(auto i:a)	cout<<i<<" ";
+
+    cout<<endl;
+}
+template <typename T1> void Print_Pairs(T1 a){
+    
+    for(auto i:a)	cout<<i.F<<" "<<i.S<<endl;;
+
+    cout<<endl;
+}
+template<typename T1> void Read(vector<T1> &a,ll n,bool Clear=false){
+    if(Clear) a.clear();
+    for(int i=0;i<n;i++){
+        T1 x;
+        cin>>x;
+        a.pb(x);
+    }
+}
+template<typename T1> void ReadPair(vector<T1> &a,ll n,bool Clear=false){
+    if(Clear) a.clear();
+    for(int i=0;i<n;i++){
+        T1 x;
+        cin>>x.S>>x.S;
+        a.pb(x);
+    }
+    return ;
+}
+void N(){
+    cout<<"No"<<endl;
+}
+void Y(){
+    cout<<"Yes"<<endl;
+}
+void Answer(bool h){
+	if(h)	Y();
+	else N();
+}
+ll accum(ll n,ll t){
+    if(n%10==0||t==0)return n;
+    if(n%10==2){
+        ll k=0;
+        if(t%4==1)k+=2;
+        if(t%4==2)k+=6;
+        if(t%4==3)k+=14;
+        return n+20*(t/4)+k;
+    }
+    return accum(n+n%10,t-1);
+}
+ll val(ll s,ll t,ll k){
+    k-=t;
+    return k*accum(s,t);
+}
+ll bs(ll l,ll r,ll s,ll k){
+    if(r-l<20){
+        ll ans=0;
+        for(int i=l;i<=r;i++){
+            ans=max(ans,val(s,i,k));
+        }
+        return ans;
+    }
+    ll m=(l+r)/2;
+    ll an1=0;
+    for(int i=m-1;i>m-10;i--){
+        an1=max(an1,val(s,i,k));
+    }
+    ll an2=0;
+    for(int i=m;i<m+10;i++){
+        an2=max(an2,val(s,i,k));
+    }
+    if(an1>an2){
+        return bs(l,m,s,k);
+    }else return bs(m,r,s,k);
+}
+void solve(){
+	ll k,s;
+	cin>>s>>k;
+	ll ans=s*k;
+	ans=max(ans,bs(0,k,s,k));
+	cout<<ans<<endl;
+}
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll t=1;
+    cin>>t;
+    for(int i=0;i<t;i++){
+        solve();
+    }
+}

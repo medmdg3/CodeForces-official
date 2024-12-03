@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+#define ll  long long
+#define pb(a) push_back(a)
+#define sz(a) a.size()
+#define mk(a,b) make_pair(a,b)
+using namespace std;
+pair<ll,ll> ad(ll n,bool a,pair<ll,ll> c){
+    if(a)   return mk(c.first+n/2+n%2,c.second+n/2);
+    return mk(c.first+n/2,n%2+c.second+n/2);
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        pair<ll,ll> a=mk(0,0),b=mk(0,0);
+        ll i=1,ind=1;
+        while(n){
+            ll x=min(i,n);
+            a=ad(x,ind%2,a);
+            n-=x;
+            i+=4;
+            ind+=x;
+            x=min(i,n);
+            b=ad(x,ind%2,b);
+            n-=x;
+            ind+=x;
+            i+=4;
+        }
+        cout<<a.first<<" "<<a.second<<" "<<b.first<<" "<<b.second<<endl;
+    }
+}

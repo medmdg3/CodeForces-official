@@ -1,0 +1,114 @@
+#include <bits/stdc++.h>
+#define ll  long long
+#define ld long double
+#define pb(a)   push_back(a)
+#define mk(a,b) make_pair(a,b)  
+#define f first
+#define s second
+using namespace std;
+const ll M=1e9+7;
+
+vector<ll> prime;
+ll inv(ll a, ll b){
+ return 1<a ? b - inv(b%a,a)*b/a : 1;
+}
+ll mod_expo(ll a,ll b){
+    return (b?(mod_expo((a*a)%M,b/2)*(b&1? a:1))%M:1);
+}
+ll gcd(ll a,ll b){
+    return (b?gcd(b,a%b):a);
+}
+void find_prime(ll n){
+    prime.clear();
+    bool Prime[n];
+    for(int i=0;i<=n;i++)Prime[i]=true;
+    for(int i=2;i<=sqrt(n);i++){
+        for(int j=i;i*j<=n;j++){
+            Prime[i*j]=false;;
+        }
+    }
+    for(int i=2;i<=n;i++){
+        if(Prime[i])	prime.pb(i);
+    }
+    return;
+}
+vector<ll> base(ll a, ll b){
+    vector<ll> c;
+    while(a){
+        c.pb(a%b);
+        a/=b;
+    }
+    return c;
+}
+void N(){
+    cout<<"NO"<<endl;
+}
+void Y(){
+    cout<<"YES"<<endl;
+}
+void Answer(bool h){
+	if(h)	Y();
+	else N();
+}
+void Array(vector<ll> a){
+    for(int i=0;i<a.size();i++) cout<<a[i]<<" ";
+    cout<<endl;
+}
+vector<pair<ll,ll> > decompose_prime(ll a){
+    vector<pair<ll,ll> > c;
+    ll i=0;
+    while(a>1){
+        
+        if(i<prime.size()){
+            if(a%prime[i])  {
+            i++;
+            continue;
+        }
+        c.pb(mk(prime[i],0));
+        while(a%prime[i]==0){
+            c[c.size()-1].s++;
+            a/=prime[i];
+        }
+        }else{
+            c.pb(mk(a,1));
+            break;
+        }
+    }
+    return c;
+}
+ll n,a;
+void solve(){
+    ll b=n-a;
+    ll p,q;
+    cin>>p>>q;
+    ll x=gcd(p,q);
+    p/=x;
+    q/=x;
+    x=abs(p-q);
+    if(x==0){
+        Answer(b==a);
+        return;
+    }
+    if((b-a)%x!=0){
+        N();
+        return;
+    }
+    x=abs(b-a)/x;
+    p*=x;
+    q*=x;
+    Answer((max(b,a)-max(p,q)==min(b,a)-min(p,q))&&max(b,a)-max(p,q)>=0);
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cin>>n;
+    string g;
+    cin>>g;
+    a=0;
+    for(int i=0;i<n;i++)if(g[i]=='+')a++;
+    ll t=1;
+    cin>>t;
+    while(t--){
+        solve();
+    }
+}

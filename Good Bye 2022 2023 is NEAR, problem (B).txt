@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+#define ld  long double
+#define ll  long long
+using namespace std;
+
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+        int n,k,m;
+        cin>>n>>k;
+        ll r=n;
+        ll l=1;
+        m=0;
+        if(k!=1){
+        while(l<=r){
+            if((int)(m/(k-1))%2==0){
+                cout<<r<<" ";
+                r=r-1;
+            }else{
+                cout<<l<<" ";
+                l++;
+            }
+            m++;
+        }
+        }else{
+            for(int i=0;i<n;i++)
+                cout<<i+1<<" ";
+        }
+        cout<<endl;
+    }
+}

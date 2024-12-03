@@ -1,0 +1,17 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+ll pgcd(ll a,ll b){
+    if(b==0)
+        return a;
+    return pgcd(b,a%b);
+}
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+        ll k;
+        cin>>k;
+        cout<<100/pgcd(k,100)<<endl;
+    }
+}

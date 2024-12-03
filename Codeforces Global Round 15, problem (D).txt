@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+vector<ll> a;
+bool po(vector<ll> a,ll val, ll x){
+    if(val==x)  return true;
+    if(!a.size())   return false;
+    ll c=a[a.size()-1];
+    a.pop_back();
+    return po(a,val+c,x)||po(a,val,x);
+}
+void solve(){
+    ll n;
+    cin>>n;
+        a.clear();
+        for(int i=0;i<n;i++){
+            ll x;
+            cin>>x;
+            a.push_back(abs(x));
+        }
+        sort(a.begin(),a.end());
+        if(a[0]==0) {
+            cout<<"YES"<<endl;
+        return;
+        }
+        for(int i=1;i<pow(3,n);i++){
+            ll x=0;
+            ll t=i;
+            for(int j=0;j<n;j++){
+                if(t%3==1)  x+=a[j];
+                if(t%3==2)  x-=a[j];
+                t/=3;
+            }
+            if(x==0){
+                cout<<"YES"<<endl;
+        return;
+            }
+        }
+        cout<<"NO"<<endl;
+        return;
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll t;
+    cin>>t;
+    while(t--){
+        solve();
+    }
+}

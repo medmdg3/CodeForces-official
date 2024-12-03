@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+
+int main() {
+    ll pr[20]={2,3,2,5,7,2,3,11,13,2,17,19,23,5,3,29,31,2,37,41};
+    ll px[20]={2,3,4,5,7,8,9,11,13,16,17,19,23,25,27,29,31,32,37,41};
+    ll t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        ll ans=0;
+        ll k=1;
+        ll cont=0;
+        for(int i=0;i<20;i++){
+            k*=pr[i];
+            ans+=(n-(n/k)-cont)*px[i];
+            ans%=1000000007;
+            cont+=(n-(n/k)-cont);
+           // cout<<pr[i]<<"  "<<cont<<" "<<ans<<" "<<k<<endl;
+            if(cont==n) break;
+        }
+        cout<<ans<<endl;
+    }
+}

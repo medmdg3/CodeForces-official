@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+        ll a,b;
+        cin>>a>>b;
+        if(a==b){
+            cout<<"0 0 \n";
+            continue;
+        }
+        cout<<abs(b-a)<<" ";
+        ll ans=min(a,b);
+        ll c=abs(b-a);
+        ans=min(ans,b-c*(int)(b/c));
+        ans=min(ans,c*(int)(b/c)+c-b);
+        ans=min(ans,a-c*(int)(a/c));
+        ans=min(ans,c*(int)(a/c)+c-a);
+        cout<<ans<<endl;
+    }
+}

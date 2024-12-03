@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+#define ll int
+using namespace std;
+ll const M=1000000007;
+const ll N=2000009;
+vector<ll> ans;
+void gener(){
+    ll a[10],b[10];
+    ll j=9;
+        for(int i=0;i<10;i++){
+                a[i]=0;
+                b[i]=0;
+        }
+        a[j]=1;
+        ll sum=0;
+        ll m=N;
+        ans.push_back(1);
+        while(m--){
+            sum=0;
+            for(int i=0;i<10;i++)
+                b[i]=a[i];
+            for(int i=1;i<10;i++)
+                a[i]=b[i-1];
+            a[0]=b[9];
+            a[1]+=b[9];
+            for(int i=0;i<10;i++){
+                a[i]%=M;
+                sum+=a[i];
+                sum%=M;
+            }
+            ans.push_back(sum);
+        }
+}
+int main() {
+    gener();
+    ios_base::sync_with_stdio(false);
+    ll t;
+    cin.tie(NULL);
+    cin>>t;
+   // t=200000;
+    while(t--){
+        string n;ll m,r=0;
+        cin>>n>>m;
+       /* n="999999999";
+        m=200000;*/
+        for(int i=0;i<n.size();i++){
+            r+=ans[max(0,m-9+(ll)(n[i])-ll('0'))];
+            r%=M;
+        }
+        
+        cout<<r<<endl;
+    }
+}

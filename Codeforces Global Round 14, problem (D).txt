@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+pair<ll,ll> tree[4*100009];
+void build(ll l,ll r,ll p){
+    if(l==r){
+        tree[p]=make_pair(l,0);
+        return;
+    }
+    build(l,(l+r)/2,p*2);
+    build((l+r)/2+1,r,p*2+1);
+    tree[p]=make_pair(l,0);
+    return;
+}
+void upd(ll l,ll r,ll p,ll ind,ll ne){
+    if(l==r&&l==ind){
+        tree[p].second+=ne;return;    
+    }
+    if(ind>r||ind<l)    return ;
+    upd(l,(l+r)/2,p*2,ind,ne);
+    upd((l+r)/2+1,r,p*2+1,ind,ne);
+    if(tree[p*2].second<=tree[p*2+1].second){
+        tree[p]=tree[p*2];
+    }else
+        tree[p]=tree[p*2+1];
+    return;    
+}
+int main() {
+    ll t;
+    cin>>t;
+    while(t--){
+        ll n,l,r;
+        cin>>n>>l>>r;
+        ll a[n];
+        for(int i=0;i<n;i++)
+            a[i]=0;
+        for(int i=0;i<n;i++){
+            ll x;
+            cin>>x;
+            x--;
+            if(i>=l)
+                a[x]++;
+            else
+                a[x]--;
+        }
+        ll ans=0;
+        ll sl=0,sr=0;
+        for(int i=0;i<n;i++){
+            if(a[i]<0)
+                sl-=a[i];
+            if(a[i]>0) 
+                sr+=a[i];
+        }
+
+       ll h=sr-min(sl,sr);
+       ll s=sl-min(sl,sr);
+       for(int i=0;i<n;i++){
+           while(a[i]>1&&h>1){
+               h-=2;
+               a[i]-=2;
+               ans++;
+           }
+           while(a[i]<-1&&s>1){
+               s-=2;
+               a[i]+=2;
+               ans++;
+           }
+       }
+  //     cout<<h<<" "<<s<<" // "<<endl; 
+        ll g=min(sl,sr);
+        ans+=g;
+        ans+=h+s;
+        cout<<ans<<endl;
+    }
+}

@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+    ll n;
+    const ll N=509;
+ll a[N][N];
+void st(){
+    for(int i=0;i<N;i++)
+        for(int j=0;j<N;j++)
+            if(i>=n||j>=n||j>i)
+                a[i][j]=-1;
+            else
+                a[i][j]=0;
+}
+bool fre(ll x,ll y){
+    if(x<0||y<0||x>=n||y>=n){
+        return false;
+    }
+
+    return (a[x][y]==0);
+}
+void colo(ll count,ll nu,ll x,ll y){
+    if(count==0) 
+        return;
+    if(fre(x-1,y)){
+        //cout<<nu<<" *1* "<<nu-count<<endl;
+        a[x-1][y]=nu;
+        colo(count -1,nu,x-1,y);
+        return;
+    }
+    if(fre(x,y-1)){
+      //  cout<<nu<<" *2* "<<nu-count<<endl;
+        a[x][y-1]=nu;
+        colo(count -1,nu,x,y-1);
+        return;
+    }
+    if(fre(x+1,y)){
+      //  cout<<nu<<" *3* "<<nu-count<<endl;
+        a[x+1][y]=nu;
+        colo(count -1,nu,x+1,y);
+        return;
+    }
+    if(fre(x,y+1)){
+        //cout<<nu<<" *4* "<<nu-count<<endl;
+        a[x][y+1]=nu;
+        colo(count -1,nu,x,y+1);
+        return;
+    }
+    cout<<nu<<" *5* "<<nu-count<<endl;
+}
+int main() {
+    cin>>n;
+    st();
+    for(int i=0;i<n;i++)
+        cin>>a[i][i];
+    for(int i=0;i<n;i++)
+        colo(a[i][i]-1,a[i][i],i,i);
+    for(int i=0;i<n;i++){
+        for(int j=0;j<=i;j++){
+            cout<<a[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}

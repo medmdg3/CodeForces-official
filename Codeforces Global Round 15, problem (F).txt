@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+#define ll  long long
+using namespace std;
+const ll M=998244353;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll n;
+    cin>>n;
+    pair<ll,ll> a[n];
+    ll h[n];
+    for(int i=0;i<n;i++){
+        cin>>a[i].first>>a[i].second>>h[i];
+    }
+    sort(a,a+n);
+    ll ans=0;
+    ll last=0;
+    ll f[n+1]={0};
+    for(int i=0;i<n;i++){
+        ans+=a[i].first-last;
+        last=a[i].first;
+        ll l=0,r=i,m=(l+r)/2;
+        while(r>=l){
+            if(a[m].first>a[i].second){
+                r=m-1;
+                if(r<0){
+                    m=0;
+                    break;
+                }
+            }
+            if(a[m].first<a[i].second)   l=m+1;
+            if(a[m].first==a[i].second)  break;
+            m=(l+r)/2;
+        }
+        if(m<0) m=0;
+        if(a[m].first<a[i].second)   m++;
+        ll val=0;
+        val+=a[i].first-a[i].second;
+        val+=f[i]-f[m]+M;
+        val%=M;
+        f[i+1]=(val+f[i])%M;
+        ans+=val*h[i];
+        ans%=M;
+    }
+    ans++;
+    cout<<ans%M<<endl;
+}

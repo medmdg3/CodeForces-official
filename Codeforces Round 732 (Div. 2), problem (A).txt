@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+#define ll  long long
+#define endl '\n'
+using namespace std;
+
+int main() {
+    ll t=0;
+    cin>>t;
+    while(t--){
+        ll n=0;
+        cin>>n;
+        ll a[n],b[n];
+        vector<pair<ll ,ll> > ans;
+        ll sum=0;
+        for(int i=0;i<n;i++){
+            cin>>a[i];
+            sum+=a[i];
+        }
+        for(int i=0;i<n;i++){
+            cin>>b[i];
+            sum-=b[i];
+        }
+        if(sum!=0){
+            cout<<-1<<endl;
+            continue;
+        }
+        ll ind=1,sub=1;
+        for(ll i=0;i<n;i++){
+            if(i==ind)
+                ind++;
+                if(i==sub)
+                    sub++;
+            while(a[i]<b[i]){
+                while(a[ind]<=b[ind])   ind++;
+                ans.push_back(make_pair(ind+1,i+1));
+                a[i]++;
+                a[ind]--;
+            }
+            while(a[i]>b[i]){
+                while(a[sub]>=b[sub])   sub++;
+                ans.push_back(make_pair(i+1,sub+1));
+                a[i]--;
+                a[sub]++;
+            }
+        }
+        cout<<ans.size()<<endl;
+        for(ll i=0;i<ans.size();i++){
+            cout<<ans[i].first<<" "<<ans[i].second<<endl;
+        }
+    }
+}

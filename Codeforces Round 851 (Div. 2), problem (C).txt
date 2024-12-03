@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+#define ll  long long
+#define ld long double
+#define pb(a)   push_back(a)
+#define mk(a,b) make_pair(a,b)  
+using namespace std;
+const ll M=1e9+7;
+vector<ll> prime;
+ll inv(ll a, ll b){
+ return 1<a ? b - inv(b%a,a)*b/a : 1;
+}
+ll mod_expo(ll a,ll b){
+    return (b?(mod_expo((a*a)%M,b/2)*(b&1? a:1))%M:1);
+}
+ll gcd(ll a,ll b){
+    return (b?gcd(b,a%b):a);
+}
+void find_prime(ll n){
+    bool a[n+1];
+    memset(a,true,sizeof(a));
+    for(int i=2;i<=n;i++){
+        for(int j=i;i*j<=n;j++){
+            a[i*j]=false;;
+        }
+    }
+    for(int i=0;i<=n;i++){
+        
+    }
+}
+void N(){
+    cout<<"No"<<endl;
+}
+void Y(){
+    cout<<"Yes"<<endl;
+}
+void solve(){
+    ll n;
+    cin>>n;
+    if(n%2==0){
+        N();
+        return;
+    }
+    Y();
+    ll h=3*(n+1);
+    h/=2;
+    bool vis[2*n+1];
+    for(int i=0;i<2*n+1;i++)    vis[i]=0;
+    for(int i=1;i<=2*n;i++){
+        
+        ll l=i,r=h-i;
+        while(l<r){
+            if(vis[l]||vis[r])  break;
+            cout<<l<<" "<<r<<endl;
+            h++;
+            vis[l]=true;
+            vis[r]=true;
+            l+=2;
+            r--;
+        }
+    }
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    ll t=1;
+    cin>>t;
+    while(t--){
+        solve();
+    }
+}

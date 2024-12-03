@@ -1,0 +1,30 @@
+#include<bits/stdc++.h>
+#define ll  long long
+using namespace std;
+int main(){
+ll t;
+cin>>t;
+while(t--){
+ll n;
+cin>>n;
+ll ct=0,cm=0;
+string g;
+cin>>g;
+bool poss=true;
+for(int i=0;i<n;i++){
+if(!poss)
+break;
+if(g[i]=='T')
+ct++;
+else
+cm++;
+if(cm>ct||(ct>2*cm+n/3-cm)){
+poss=false;
+}
+}
+if(poss&&cm==n/3&&n%3==0)
+cout<<"YES"<<endl;
+else
+cout<<"NO"<<endl;
+}
+}
